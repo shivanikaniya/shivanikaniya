@@ -1,11 +1,11 @@
 <?php
 
 require_once "database.php";
-$name = "";
+$name = $id=" ";
 $name_err =  "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-
+    // Validate name
     $input_name = trim($_POST["name"]);
     if(empty($input_name)){
         $name_err = "Please enter a name.";
@@ -16,31 +16,32 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     
-    if(empty($name_err) ){
-        
-        $sql = "INSERT INTO list (id,category) VALUES (?, ?)";
+    // Check input errors before inserting in database
+    if(empty($name_err) && empty($address_err) && empty($salary_err)){
+        // Prepare an insert statement
+        $sql = "INSERT INTO `list` (`id`,  `name`) VALUES (?, ?)";
          
-        if($stmt = mysqli_prepare($link, 'INSERT INTO list (id,category) VALUES (?, ?)')){
-           
-            mysqli_stmt_bind_param($stmt, "sss", $param_name);
+        if($stmt = mysqli_prepare($conn, $sql)){
             $param_name = $name;
-           
+            $param_id =$id;
+            mysqli_stmt_bind_param($stmt, "ss",$param_id,$param_name);
             
-            
+         
             if(mysqli_stmt_execute($stmt)){
-                
-                header("location: index.html");
+
+                header("location: index.php");
                 exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
         }
-     
+         
+        // Close statement
         mysqli_stmt_close($stmt);
     }
     
-
-    mysqli_close($link);
+    // Close connection
+    mysqli_close($conn);
 }
 ?>
  

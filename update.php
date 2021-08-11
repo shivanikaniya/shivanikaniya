@@ -18,15 +18,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     }
     
     if(empty($name_err)){
-        $sql = "UPDATE list SET category=? WHERE id=?";
+        $sql = "UPDATE list SET name=? WHERE id=?";
          
-        if($stmt = mysqli_prepare($link, 'UPDATE list SET category=? WHERE id=?')){
-
-            mysqli_stmt_bind_param($stmt, "sssi", $param_name, $param_address, $param_salary, $param_id);
-     
+        if($stmt = mysqli_prepare($conn, 'UPDATE list SET name=? WHERE id=?')){
             $param_name = $name;
             $param_id = $id;
- 
+            mysqli_stmt_bind_param($stmt, "ss", $param_name, $param_id);
             if(mysqli_stmt_execute($stmt)){
           
                 header("location: index.php");
@@ -39,7 +36,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         mysqli_stmt_close($stmt);
     }
 
-    mysqli_close($link);
+    mysqli_close($conn);
 } else{
  
     if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
@@ -47,7 +44,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $id =  trim($_GET["id"]);
         
         $sql = "SELECT * FROM list WHERE id = ?";
-        if($stmt = mysqli_prepare($link, 'SELECT * FROM list WHERE id = ?')){
+        if($stmt = mysqli_prepare($conn, 'SELECT * FROM list WHERE id = ?')){
             
             mysqli_stmt_bind_param($stmt, "i", $param_id);
       
@@ -73,7 +70,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             }
         }
         mysqli_stmt_close($stmt);
-        mysqli_close($link);
+        mysqli_close($conn);
     }  else{
         header("location: error.php");
         exit();

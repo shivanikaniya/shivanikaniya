@@ -33,7 +33,7 @@
                     <?php
                     require_once "database.php";
                     $sql = "SELECT * FROM list";
-                    if($result = mysqli_query($link, 'SELECT * from list')){
+                    if($result = mysqli_query($conn, "SELECT * from list")){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table table-bordered table-striped">';
                                 echo "<thead>";
@@ -47,11 +47,12 @@
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['category'] . "</td>";
-                                        echo "<td>";
-                                            echo '<a href="read.php?id='. $row['id'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                        echo "<td>" . $row['name'] . "</td>";
+                                        echo "<td style='width:300px'>";
+                                            echo '<a href="create.php?id='. $row['id'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-plus-circle"></span></a>';
                                             echo '<a href="update.php?id='. $row['id'] .'" class="mr-3" title="Update Record" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                            echo '<a href="delete.php?id='. $row['id'] .'" title="Delete Record" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="delete.php?id='. $row['id'] .'" class="mr-3"title="Delete Record" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="read.php?id='. $row['id'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -64,7 +65,7 @@
                     } else{
                         echo "Oops! Something went wrong. Please try again later.";
                     }
-                    mysqli_close($link);
+                    mysqli_close($conn);
                     ?>
                 </div>
             </div>        
